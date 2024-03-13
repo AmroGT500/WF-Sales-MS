@@ -1,4 +1,4 @@
-const mockData = [
+const inventoryData = [
     {
         "materialID": "FG001",
         "name": "Apples",
@@ -56,4 +56,4 @@ const mockData = [
     }
 ];
 
-export default mockData;
+export default inventoryData;
