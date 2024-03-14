@@ -10,6 +10,7 @@ h1 {
     margin-top: 20px;
     margin-bottom: 0;
 }
+
 #buttons {
     display: flex;
     flex-direction: row;
@@ -23,8 +24,8 @@ button {
     padding: 10px 10px;
     font-size: 16px;
     display: flex;
-    align-items: center; 
-    justify-content: center; 
+    align-items: center;
+    justify-content: center;
     border: none;
     background-color: rgb(90, 90, 255);
     color: #fff;
@@ -40,28 +41,29 @@ button:hover {
     max-width: 100%;
     margin: 0 auto;
     overflow-x: auto;
-    overflow-y: auto; 
+    overflow-y: auto;
 }
 
-#inventoryList {
-    width: 100%; 
+#dataList {
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
+/* Table Styles */
 .inventory-table {
     width: 100%;
     border-collapse: collapse;
+    margin-top: 20px; /* Add some margin at the top of the table */
 }
 
 .inventory-table th, .inventory-table td {
     border: 1px solid #ccc;
     padding: 10px;
     text-align: left;
-    max-width: 100px;
+    max-width: 200px;
     min-width: 100px;
-    max-height: 100px;
     overflow-wrap: break-word;
 }
 
@@ -77,31 +79,4 @@ button:hover {
 
 .inventory-table tr:hover {
     background-color: #ddd;
-}
-
-#customerInfoHeader {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-items: start;
-    gap: 10px;
-    margin-bottom: 10px;
-}
-
-#customerDeliveryInfo {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 10px;
-}
-
-#totals{
-    display: flex;
-    flex-direction: row;
-    gap: 10px;
-}
-
-#validationBar {
-    display: flex;
-    flex-direction: row;
 }
