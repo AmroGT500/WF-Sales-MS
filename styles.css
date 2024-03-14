@@ -5,6 +5,12 @@ body {
     align-items: center;
 }
 
+#app {  
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
 h1 {
     text-align: center;
     margin-top: 20px;
@@ -51,11 +57,10 @@ button:hover {
     align-items: center;
 }
 
-/* Table Styles */
 .inventory-table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 20px; /* Add some margin at the top of the table */
+    margin-top: 20px; 
 }
 
 .inventory-table th, .inventory-table td {
@@ -79,4 +84,46 @@ button:hover {
 
 .inventory-table tr:hover {
     background-color: #ddd;
+}
+
+#salesOrderForm {
+    display: flex;
+    flex-direction: column;
+    border: solid 3px #00000070;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+#salesOrderForm h2 {
+    margin-bottom: 0;
+}
+
+#salesOrderForm p {
+    margin-top: 0;
+    margin-bottom: 30px; 
+}
+
+#salesOrderForm #orderDetailsTable {
+    margin-bottom: 30px;
+}
+
+#orderDetailsTable {
+    border-collapse: collapse;
+    border-radius: 3px;
+    overflow: hidden; 
+    background-color: white; 
+}
+
+#orderDetailsTable th {
+    border: 2px solid #00000070;
+    padding: 5px;
+    width: 200px; 
+    text-align: center; 
+}
+
+#orderDetailsTable td {
+    border: 2px solid #00000070;
+    padding: 5px;
+    width: 200px; 
+    text-align: center; 
 }

@@ -1,5 +1,5 @@
 import inventoryData from './inventoryData.js';
-
+import customerData from './customerData.js';
 
 
 // Display sales order form //
@@ -9,17 +9,35 @@ function displaySalesOrderForm() {
     
     const salesOrderForm = `
         <div id="salesOrderForm">
-            <h2>Sales Order</h2>
-            <!-- Add your form elements here -->
-            <button id="addItemBtn">Add Item</button>
+            <h2>WholeFoods, Jhang</h2>
+            <p>138 Iqbal Road, Jhang, Pakistan +92-333-555-1212 wholefoods@wfj.com</p>
+            <table id="orderDetailsTable">
+                <thead>
+                    <tr>
+                        <th>Customer</th>
+                        <th>Delivery Date</th>
+                        <th>Items Total $</th>
+                        <th>15% Tax</th>
+                        <th>Order Total $</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td id="customerCell"></td>
+                        <td><input type="date" id="deliveryDate"></td>
+                        <td id="itemsTotalPlaceholder">Placeholder for Items Total $</td>
+                        <td id="taxPlaceholder">Placeholder for 15% Tax</td>
+                        <td id="orderTotalPlaceholder">Placeholder for Order Total $</td>
+                    </tr>
+                </tbody>
+            </table>
+            <button id="addItemBtn" class="add-item-btn">Add Item</button>
             <table id="salesOrderTable" class="inventory-table">
                 <thead>
                     <tr>
-                        <!-- Define your table headers -->
                     </tr>
                 </thead>
                 <tbody id="salesOrderItems">
-                    <!-- Rows will be dynamically added here -->
                 </tbody>
             </table>
             <div id="validationBar" style="display: none;">
@@ -31,17 +49,29 @@ function displaySalesOrderForm() {
 
     dataList.insertAdjacentHTML('beforeend', salesOrderForm);
 
+    // customer selector //
+    const customerCell = document.getElementById('customerCell');
+    const customerSelector = document.createElement('select');
+    customerSelector.id = 'customerSelector';
+    customerData.forEach(customer => {
+        const option = document.createElement('option');
+        option.value = customer.customerID;
+        option.textContent = customer.name;
+        customerSelector.appendChild(option);
+    });
+    customerCell.appendChild(customerSelector);
+
     document.getElementById('addItemBtn').addEventListener('click', addRowToSalesOrderTable);
     document.getElementById('validateBtn').addEventListener('click', validateSalesOrder);
     document.getElementById('saveBtn').addEventListener('click', saveSalesOrder);
+
+    // initialize placeholders //
+    updatePlaceholders();
 }
 
 document.getElementById('createSalesOrderBtn').addEventListener('click', displaySalesOrderForm);
 
-
-
-
-// Add a row to the sales order table //
+// add row to order table //
 let isFirstAdd = true;
 let itemIdCounter = 0;
 
@@ -95,10 +125,11 @@ function addRowToSalesOrderTable() {
         validationBar.style.display = 'flex';
     }
 
-    // Listen for input event on the quantity input field //
+    // listen for input event on the quantity input field //
     const quantityInput = newRow.querySelector('.quantity');
     quantityInput.addEventListener('input', function() {
         updateTotal(newRow);
+        updatePlaceholders(); // update placeholders when quantity changes //
     });
 }
 
@@ -119,12 +150,12 @@ function populateMaterialIdOptions(row) {
         materialIdSelector.appendChild(option);
     });
 
-    // Listen for change event on the material ID selector //
+    // listen for change event on the material ID selector //
     materialIdSelector.addEventListener('change', function() {
         const selectedMaterialID = this.value;
         const selectedMaterial = inventoryData.find(item => item.materialID === selectedMaterialID);
         if (selectedMaterial) {
-            // Update row with selected material data //
+            // update row with selected material's data //
             row.querySelector('.name').textContent = selectedMaterial.name;
             row.querySelector('.description').textContent = selectedMaterial.description;
             row.querySelector('.category-id').textContent = selectedMaterial.categoryID;
@@ -135,8 +166,26 @@ function populateMaterialIdOptions(row) {
     });
 }
 
+// update placeholders for Items Total, Tax, and Order Total //
+function updatePlaceholders() {
+    const salesOrderItems = document.getElementById('salesOrderItems');
+    const totalElements = salesOrderItems.querySelectorAll('.total');
+    let itemsTotal = 0;
+    totalElements.forEach(element => {
+        itemsTotal += parseFloat(element.textContent);
+    });
 
+    const itemsTotalPlaceholder = document.getElementById('itemsTotalPlaceholder');
+    itemsTotalPlaceholder.textContent = itemsTotal.toFixed(2);
 
+    const taxPlaceholder = document.getElementById('taxPlaceholder');
+    const tax = itemsTotal * 0.15; 
+    taxPlaceholder.textContent = tax.toFixed(2);
+
+    const orderTotalPlaceholder = document.getElementById('orderTotalPlaceholder');
+    const orderTotal = itemsTotal + tax;
+    orderTotalPlaceholder.textContent = orderTotal.toFixed(2);
+}
 
 // Validation and Save //
 function validateSalesOrder() {
