@@ -24,7 +24,7 @@ function displaySalesOrderForm() {
                     <tr>
                         <td id="customerCell"></td>
                         <td><input type="date" id="deliveryDate"></td>
-                        <td id="itemsTotalPlaceholder">Items Total $</td>
+                        <td id="itemsTotalPlaceholder"></td>
                         <td id="taxPlaceholder"></td>
                         <td id="orderTotalPlaceholder"></td>
                     </tr>
@@ -73,12 +73,12 @@ function displaySalesOrderForm() {
 
 
 
-    
+
     // Add event listeners
     document.getElementById('addItemBtn').addEventListener('click', addRowToSalesOrderTable);
     document.getElementById('validateBtn').addEventListener('click', validateAndSave);
 }
-
+export default displaySalesOrderForm; 
 
 
 
@@ -297,7 +297,7 @@ function getAvailableStock(materialID, tempQuantityMap) {
 // Function to save data to tempTable 
 function saveRowToTempTable(tempTable) {
     const salesOrderItems = document.getElementById('salesOrderItems');
-    const newRow = salesOrderItems.lastElementChild;
+    const rows = salesOrderItems.querySelectorAll('tr');
 
     const customerID = document.getElementById('customerSelector').value;
     const customer = customerData.find(customer => customer.customerID === customerID);
@@ -309,46 +309,47 @@ function saveRowToTempTable(tempTable) {
     const orderTotal = parseFloat(document.getElementById('orderTotalPlaceholder').textContent);
     const currency = 'PKR';
 
-    const itemID = newRow.querySelector('td').textContent;
-    const materialID = newRow.querySelector('.material-id-selector').value;
-    const name = newRow.querySelector('.name').textContent;
-    const description = newRow.querySelector('.description').textContent;
-    const categoryID = newRow.querySelector('.category-id').textContent;
-    const quantity = parseInt(newRow.querySelector('.quantity').value);
-    const unit = newRow.querySelector('.unit').textContent;
-    const pricePerUnit = parseFloat(newRow.querySelector('.price-per-unit').textContent);
-    const total = parseFloat(newRow.querySelector('.total').textContent);
-
-    const salesOrderObj1 = {
-        customer: customerName,
-        customerID,
-        deliveryDate,
-        itemsTotal,
-        tax,
-        orderTotal,
-        currency
-    };
-
-    const salesOrderObj2 = {
-        itemID,
-        materialID,
-        name,
-        description,
-        categoryID,
-        quantity,
-        unit,
-        pricePerUnit,
-        currency,
-        total
-    };
-
     // Clear the tempTable before pushing new data
     tempTable.length = 0;
 
-    // Push the new data to tempTable
-    tempTable.push(salesOrderObj1, salesOrderObj2);
+    // Push each row's data to tempTable
+    rows.forEach(row => {
+        const itemID = row.querySelector('td').textContent;
+        const materialID = row.querySelector('.material-id-selector').value;
+        const name = row.querySelector('.name').textContent;
+        const description = row.querySelector('.description').textContent;
+        const categoryID = row.querySelector('.category-id').textContent;
+        const quantity = parseInt(row.querySelector('.quantity').value);
+        const unit = row.querySelector('.unit').textContent;
+        const pricePerUnit = parseFloat(row.querySelector('.price-per-unit').textContent);
+        const total = parseFloat(row.querySelector('.total').textContent);
+
+        const salesOrderObj = {
+            customer: customerName,
+            customerID,
+            deliveryDate,
+            itemsTotal,
+            tax,
+            orderTotal,
+            currency,
+            itemID,
+            materialID,
+            name,
+            description,
+            categoryID,
+            quantity,
+            unit,
+            pricePerUnit,
+            total
+        };
+
+        tempTable.push(salesOrderObj);
+    });
+
     console.log(tempTable);
 }
+
+
 
 // Event listener for DOMContentLoaded to initialize
 document.addEventListener('DOMContentLoaded', function () {
